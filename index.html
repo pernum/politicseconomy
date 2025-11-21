@@ -181,7 +181,31 @@
                 <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
                     <h3 class="font-bold text-indigo-900 mb-2 border-b pb-1">価格の自動調整機能</h3>
                     <p class="text-sm mb-2">完全競争市場では、需要量と供給量が一致する点で<span class="cloze">均衡価格</span>が決まる。</p>
-                     
+                    
+                    <!-- SVGでグラフを描画 -->
+                    <div class="flex justify-center my-4">
+                        <svg width="200" height="150" viewBox="0 0 200 150" class="border border-slate-200 bg-slate-50 rounded">
+                            <!-- 軸 -->
+                            <line x1="20" y1="130" x2="190" y2="130" stroke="#64748b" stroke-width="2" />
+                            <line x1="20" y1="130" x2="20" y2="10" stroke="#64748b" stroke-width="2" />
+                            <text x="10" y="10" font-size="10" fill="#64748b">価格</text>
+                            <text x="180" y="145" font-size="10" fill="#64748b">数量</text>
+                            
+                            <!-- 需要曲線 -->
+                            <line x1="30" y1="20" x2="180" y2="130" stroke="#ef4444" stroke-width="2" />
+                            <text x="170" y="125" font-size="10" fill="#ef4444">D(需要)</text>
+                            
+                            <!-- 供給曲線 -->
+                            <line x1="30" y1="130" x2="180" y2="20" stroke="#3b82f6" stroke-width="2" />
+                            <text x="170" y="25" font-size="10" fill="#3b82f6">S(供給)</text>
+                            
+                            <!-- 均衡点 -->
+                            <circle cx="105" cy="75" r="4" fill="#10b981" />
+                            <text x="110" y="70" font-size="10" fill="#10b981" font-weight="bold">均衡点</text>
+                        </svg>
+                    </div>
+
+                    <table class="w-full text-sm text-left border-collapse">
                         <tbody class="divide-y">
                             <tr>
                                 <td class="p-1 font-bold">価格が高すぎる</td>
@@ -294,11 +318,11 @@
                         <li>③<strong>景気の安定化</strong>：
                             <ul class="pl-3 list-disc text-xs mt-1 text-gray-600">
                                 <li><span class="cloze">ビルト・イン・スタビライザー</span>（自動安定化装置）：累進課税や雇用保険など。</li>
-                                <li><span class="cloze">フィスカル・ポリシー</span>（裁量的財政政策）：公共事業の増減や増減税。</li>
+                                <li><span class="cloze">フィスカル・ポリシー</span>（裁量的財政政策）：公共事業の増減や増減税で意図的に景気を操作する。</li>
                             </ul>
                         </li>
                         <li class="mt-2 pt-2 border-t"><strong>租税</strong>：
-                            <br>直接税（所得税等）と間接税（消費税等）。消費税には<span class="cloze">逆進性</span>（低所得者ほど負担感が重い）がある。
+                            <br>直接税（所得税など）と間接税（消費税など）。消費税には<span class="cloze">逆進性</span>（低所得者ほど負担感が重い）がある。
                         </li>
                     </ul>
                 </div>
