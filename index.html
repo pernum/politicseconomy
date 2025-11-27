@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>共通テスト公共/倫理</title>
+    <title>共通テスト公共 完全統合マスター（江戸・明治・政経）</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
             background-color: #f8fafc;
             -webkit-print-color-adjust: exact;
             color: #334155;
-            padding-top: 64px; /* ヘッダーの高さ分 */
+            padding-top: 64px;
             scroll-behavior: smooth;
         }
 
@@ -21,7 +21,7 @@
         ruby { ruby-position: over; }
         rt { font-size: 0.6em; color: #64748b; font-weight: normal; }
 
-        /* --- 暗記用スタイル --- */
+        /* 暗記用スタイル */
         .cloze-wrapper {
             display: inline-flex;
             align-items: baseline;
@@ -29,7 +29,6 @@
             position: relative;
         }
 
-        /* 目立たないチェックボックス */
         .memory-checkbox {
             display: none;
             appearance: none;
@@ -61,7 +60,7 @@
             line-height: 1;
         }
 
-        /* 重要語句（赤文字） */
+        /* 重要語句 */
         .cloze {
             color: #dc2626;
             font-weight: 700;
@@ -70,15 +69,6 @@
             border-radius: 4px;
         }
 
-        /* 解説テキスト */
-        .explanation {
-            font-size: 0.9em;
-            color: #475569;
-            margin-top: 0.5em;
-            padding-left: 1em;
-            border-left: 3px solid #cbd5e1;
-        }
-        
         /* 手書きメモ風 */
         .handwritten-note {
             color: #0369a1;
@@ -88,17 +78,7 @@
             display: block;
         }
 
-        /* バッジ・アイコン */
-        .badge {
-            display: inline-block;
-            background-color: #e0e7ff;
-            color: #4338ca;
-            font-size: 0.75rem;
-            padding: 0.1rem 0.5rem;
-            border-radius: 9999px;
-            margin-right: 0.5rem;
-            font-weight: bold;
-        }
+        /* 新課程アイコン */
         .new-curriculum {
             background-color: #dcfce7;
             color: #166534;
@@ -111,7 +91,19 @@
             display: inline-block;
         }
 
-        /* 暗記モードON時の挙動 */
+        /* バッジ */
+        .badge {
+            display: inline-block;
+            background-color: #e0e7ff;
+            color: #4338ca;
+            font-size: 0.75rem;
+            padding: 0.1rem 0.5rem;
+            border-radius: 9999px;
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+
+        /* 暗記モードON */
         body.memorize-mode .memory-checkbox { display: inline-block; }
         body.memorize-mode .memory-checkbox:not(:checked) + .cloze {
             background-color: #ef4444;
@@ -129,7 +121,7 @@
             color: #dc2626;
         }
 
-        /* メニュー（ドロワー）スタイル */
+        /* メニュー */
         #drawer-menu {
             transform: translateX(-100%);
             transition: transform 0.3s ease-in-out;
@@ -144,9 +136,7 @@
             cursor: pointer;
             transition: background 0.2s;
         }
-        .menu-item:hover {
-            background-color: #f1f5f9;
-        }
+        .menu-item:hover { background-color: #f1f5f9; }
         .menu-item.active {
             background-color: #e0e7ff;
             color: #4338ca;
@@ -154,7 +144,7 @@
             border-left: 4px solid #4338ca;
         }
 
-        /* --- 印刷用設定 --- */
+        /* 印刷設定 */
         @media print {
             @page { size: A4; margin: 10mm 10mm; }
             body { background-color: white; font-size: 9pt; padding-top: 0; } 
@@ -165,16 +155,12 @@
             .memory-checkbox { display: none !important; }
             h2 { border-bottom: 2px solid #4f46e5 !important; margin-top: 1.5em !important; margin-bottom: 0.5em !important; font-size: 1.2rem !important; page-break-after: avoid; }
             h1 { page-break-before: always; }
-            .explanation { border-left: 1px solid #cbd5e1; }
-            
-            /* 印刷時は非表示セクションも全て表示するか、あるいは現在表示中のものだけにするか */
-            /* ここでは現在表示中のセクションのみ印刷されるようにする（デフォルト挙動） */
         }
     </style>
 </head>
 <body>
 
-    <!-- 固定ヘッダー -->
+    <!-- ヘッダー -->
     <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm h-16 no-print">
         <div class="max-w-6xl mx-auto px-4 h-full flex justify-between items-center">
             <div class="flex items-center gap-4">
@@ -205,16 +191,19 @@
         </div>
         <div class="py-2">
             <a onclick="switchSection('edo')" id="link-edo" class="menu-item active">
-                <i class="fas fa-history w-6 text-center mr-2"></i>江戸思想家
+                <i class="fas fa-history w-6 text-center mr-2"></i>1. 江戸思想家
+            </a>
+            <a onclick="switchSection('meiji')" id="link-meiji" class="menu-item">
+                <i class="fas fa-book-reader w-6 text-center mr-2"></i>2. 明治〜現代（今回分）
             </a>
             <a onclick="switchSection('seikei')" id="link-seikei" class="menu-item">
-                <i class="fas fa-landmark w-6 text-center mr-2"></i>政治・経済
+                <i class="fas fa-landmark w-6 text-center mr-2"></i>3. 政治・経済
             </a>
         </div>
         <div class="p-4 mt-4 text-xs text-gray-500">
-            <p class="mb-2">● 使い方</p>
-            <p>1. 右上のボタンで「暗記モード」をONにすると赤字が隠れます。</p>
-            <p>2. 隠れた文字をクリックで確認。</p>
+            <p class="mb-2 font-bold">● 使い方</p>
+            <p>1. 右上のボタンで「暗記モード」ON。</p>
+            <p>2. 赤字をクリックで答えを確認。</p>
             <p>3. □にチェックを入れると、その単語は常に表示されます。</p>
         </div>
     </nav>
@@ -222,12 +211,12 @@
     <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
 
         <!-- ==========================================
-             セクション1：江戸思想家（初期表示）
+             SECTION 1: 江戸思想家 (初期表示)
              ========================================== -->
         <div id="section-edo" class="section-content">
             <div class="text-center mb-8 border-b pb-4 print-break-inside-avoid">
-                <h2 class="text-2xl font-bold text-slate-800">その他の江戸期の思想家</h2>
-                <p class="text-sm text-gray-500 mt-2">日本朱子学・洋学・町人思想など（画像資料より）</p>
+                <h2 class="text-2xl font-bold text-slate-800">第1部：江戸期の思想家</h2>
+                <p class="text-sm text-gray-500 mt-2">日本朱子学・洋学・町人思想など</p>
             </div>
 
             <!-- 1. 日本朱子学・自然科学 -->
@@ -240,14 +229,11 @@
                     <h3 class="text-lg font-bold text-indigo-900 mb-3 flex items-center">
                         <ruby class="cloze">貝原益軒<rt>かいばらえきけん</rt></ruby>
                     </h3>
-                    <p class="text-xs text-gray-500 mb-2 font-bold">本草学者・医師・数学者・天文学者・朱子学者</p>
+                    <p class="text-xs text-gray-500 mb-2 font-bold">本草学者・儒学者</p>
                     <div class="text-sm space-y-2">
-                        <p>医学・天文学・数学に通じ、シーボルトからは「<span class="cloze">日本のアリストテレス</span>」と称された博学者。</p>
-                        <p>また朱子学的な見地から民衆を啓蒙し、女性のあり方を説く『<span class="cloze">三従の倫理</span>』で有名。</p>
-                        <div class="bg-slate-50 p-2 rounded text-xs text-gray-600 mt-2">
-                            <strong>三従の倫理とは：</strong><br>
-                            「家では父に従い、嫁しては夫に従い、夫死しては子に従う」という教え。
-                        </div>
+                        <p>シーボルトから「<span class="cloze">日本のアリストテレス</span>」と称賛された博学者。</p>
+                        <p>朱子学的見地から『<span class="cloze">三従の倫理</span>』を説き、女子は「家では父に、嫁しては夫に、老いては子に従うべし」とした。</p>
+                        <p>主著：『大和本草』『養生訓』。</p>
                     </div>
                 </div>
             </section>
@@ -260,66 +246,45 @@
                 </h2>
                 <div class="space-y-4">
                     <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-indigo-900 mb-2 flex items-center">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-2">
                             <ruby class="cloze">杉田玄白<rt>すぎたげんぱく</rt></ruby>
-                            <span class="ml-2 text-sm font-normal text-gray-600">（蘭方医）</span>
                         </h3>
                         <div class="text-sm pl-5 border-l-4 border-indigo-100">
-                            <p class="mb-2">
-                                <span class="font-bold"><ruby class="cloze">前野良沢<rt>まえのりょうたく</rt></ruby></span>
-                                （青木昆陽にオランダ語を学び、長崎で蘭学を修学した人物）とともに、オランダ語の西洋医学書『ターヘル＝アナトミア』を翻訳。
-                            </p>
-                            <p>これを『<span class="cloze">解体新書</span>』として刊行し、日本の医学に革新をもたらした。</p>
+                            <p class="mb-2"><span class="font-bold"><ruby class="cloze">前野良沢<rt>まえのりょうたく</rt></ruby></span>と共に『ターヘル＝アナトミア』を翻訳。</p>
+                            <p>『<span class="cloze">解体新書</span>』として刊行し、日本の医学に革新をもたらした。</p>
                         </div>
                     </div>
-
                     <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-indigo-900 mb-2 flex items-center">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-2">
                             <ruby class="cloze">緒方洪庵<rt>おがたこうあん</rt></ruby>
-                            <span class="ml-2 text-sm font-normal text-gray-600">（蘭学者）</span>
                         </h3>
                         <div class="text-sm pl-5 border-l-4 border-indigo-100">
-                            <p>大坂に蘭学塾である「<span class="cloze">適塾</span>」（現在の大阪大学の前身）を設立。</p>
-                            <p><span class="font-bold">福沢諭吉</span>や大村益次郎など、幕末から明治にかけて活躍する多くの人材を輩出した。</p>
+                            <p>大坂に蘭学塾「<span class="cloze">適塾</span>」を開く。<span class="font-bold">福沢諭吉</span>や大村益次郎らを輩出。</p>
                         </div>
                     </div>
-
                     <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-indigo-900 mb-2 flex items-center">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-2">
                             <ruby class="cloze">三浦梅園<rt>みうらばいえん</rt></ruby>
-                            <span class="ml-2 text-sm font-normal text-gray-600">（自然科学者）</span>
                         </h3>
                         <div class="text-sm pl-5 border-l-4 border-indigo-100">
-                            <p class="mb-2">生涯を通して豊後の国（現在の大分県）にとどまり続けた独創的な自然科学者。</p>
-                            <p><span class="cloze">条理学</span>を提唱。</p>
-                            <span class="handwritten-note">「自然界にある条理（＝法則）を学ぶ学問」</span>
+                            <p>豊後の自然科学者。<span class="cloze">条理学</span>（自然界の法則を探求する学問）を提唱。</p>
                         </div>
                     </div>
-
                     <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-indigo-900 mb-2 flex items-center">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-2">
                             <ruby class="cloze">志筑忠雄<rt>しづきただお</rt></ruby>
-                            <span class="ml-2 text-sm font-normal text-gray-600">（蘭学者）</span>
                         </h3>
                         <div class="text-sm pl-5 border-l-4 border-indigo-100">
-                            <p>物理・天文学の入門書『<span class="cloze">暦象新書</span>』を著す。</p>
-                            <p>この中で、コペルニクスの地動説、ニュートンの万有引力説や力学などを、自説を交えながら日本に紹介した。</p>
+                            <p>『<span class="cloze">暦象新書</span>』を著し、ニュートン力学や地動説を紹介。</p>
                         </div>
                     </div>
-
                     <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-indigo-900 mb-2 flex items-center">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-2">
                             <ruby class="cloze">渡辺崋山<rt>わたなべかざん</rt></ruby>
-                            <span class="ml-2 text-sm font-normal text-gray-600">（蘭学者・画家）</span>
                         </h3>
                         <div class="text-sm pl-5 border-l-4 border-indigo-100">
-                            <p class="mb-2">学んだ蘭学を、飢饉対策や教育振興などの政治に役立てようとしたヒューマニスト。</p>
-                            <ul class="list-disc list-inside space-y-1 ml-1">
-                                <li><span class="cloze">高野長英</span>らと西洋研究会（＝<span class="cloze">尚歯会</span>）を設立。</li>
-                                <li>米船モリソン号に対する幕府の砲撃（異国船打払令）の無謀さを説く『<span class="cloze">慎機論</span>』を著した。</li>
-                                <li>これが原因で幕府から弾圧を受ける（＝<span class="cloze">蛮社の獄</span>）。</li>
-                            </ul>
-                            <span class="text-xs text-gray-500 mt-1 ml-2">※「蛮社」とは「尚歯会」のこと。</span>
+                            <p><span class="cloze">高野長英</span>らと「<span class="cloze">尚歯会</span>」を結成。</p>
+                            <p>『<span class="cloze">慎機論</span>』で幕府の対外政策を批判し、<span class="cloze">蛮社の獄</span>で弾圧された。</p>
                         </div>
                     </div>
                 </div>
@@ -333,38 +298,22 @@
                 </h2>
                 <div class="space-y-4">
                     <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-indigo-900 mb-2 flex items-center">
-                            <ruby class="cloze">西川如見<rt>にしかわじょけん</rt></ruby>
-                            <span class="ml-2 text-sm font-normal text-gray-600">（儒学者・天文暦学者）</span>
-                        </h3>
+                        <h3 class="text-lg font-bold text-indigo-900 mb-2"><ruby class="cloze">西川如見<rt>にしかわじょけん</rt></ruby></h3>
                         <div class="text-sm pl-5 border-l-4 border-teal-100">
-                            <p class="mb-2">長崎で天文暦学・地理などを学び、将軍徳川吉宗の招きで、江戸で天文学を講じた。</p>
-                            <p class="mb-2">著書『<span class="cloze">町人嚢</span>』において、封建制下の身分は単に官位（役目）の上下であり、<span class="cloze">人間の貴賤を示すものではない</span>との平等観を主張した。</p>
+                            <p>『<span class="cloze">町人嚢</span>』で、身分は役目上の区別に過ぎず、<span class="cloze">人間の貴賤はない</span>と主張。</p>
                             <span class="handwritten-note">「ただの町人こそ楽しけれ」</span>
                         </div>
                     </div>
-
                     <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-indigo-900 mb-2 flex items-center">
-                            <ruby class="cloze">山片蟠桃<rt>やまがたばんとう</rt></ruby>
-                            <span class="ml-2 text-sm font-normal text-gray-600">（町人出身の実学者）</span>
-                        </h3>
+                        <h3 class="text-lg font-bold text-indigo-900 mb-2"><ruby class="cloze">山片蟠桃<rt>やまがたばんとう</rt></ruby></h3>
                         <div class="text-sm pl-5 border-l-4 border-teal-100">
-                            <p class="mb-2"><span class="cloze">懐徳堂</span>（大坂の町人教育施設）に学ぶ。</p>
-                            <p class="mb-2">徹底した<span class="cloze">唯物論</span>的な立場から『<span class="cloze">夢の代</span>』を著す。</p>
-                            <p>蘭学の実証性を高く評価するとともに、宗教的迷信を批判して地獄や霊魂の存在を否定する「<span class="cloze">無鬼論</span>」（無神論）を説いた。</p>
+                            <p><span class="cloze">懐徳堂</span>に学ぶ。<span class="cloze">唯物論</span>的立場から『<span class="cloze">夢の代</span>』を著し、地獄や霊魂を否定する「<span class="cloze">無鬼論</span>」を説いた。</p>
                         </div>
                     </div>
-
                     <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-indigo-900 mb-2 flex items-center">
-                            <ruby class="cloze">富永仲基<rt>とみながなかもと</rt></ruby>
-                            <span class="ml-2 text-sm font-normal text-gray-600">（思想史家）</span>
-                        </h3>
+                        <h3 class="text-lg font-bold text-indigo-900 mb-2"><ruby class="cloze">富永仲基<rt>とみながなかもと</rt></ruby></h3>
                         <div class="text-sm pl-5 border-l-4 border-teal-100">
-                            <p class="mb-2"><span class="cloze">懐徳堂</span>に学ぶ。</p>
-                            <p class="mb-2">仏教・儒教・神道を歴史的に研究。「古い思想ほど、後世になってから新たに付加された要素が多い」という法則（＝<span class="cloze">加上</span>）を発見した。</p>
-                            <p>特に「<span class="cloze">大乗非仏説</span>」（大乗仏教は後世の創作であり、仏陀の直接の教えではない）を唱えたことで有名。</p>
+                            <p><span class="cloze">懐徳堂</span>に学ぶ。思想の歴史的発展における<span class="cloze">加上</span>説（古いものほど後世に付け加えられる）や、<span class="cloze">大乗非仏説</span>を唱えた。</p>
                         </div>
                     </div>
                 </div>
@@ -378,30 +327,21 @@
                 </h2>
                 <div class="grid md:grid-cols-2 gap-6">
                     <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-indigo-900 mb-2 flex items-center">
-                            <ruby class="cloze">井原西鶴<rt>いはらさいかく</rt></ruby>
-                            <span class="ml-2 text-sm font-normal text-gray-600">（浮世草子作家）</span>
-                        </h3>
+                        <h3 class="text-lg font-bold text-indigo-900 mb-2"><ruby class="cloze">井原西鶴<rt>いはらさいかく</rt></ruby></h3>
                         <div class="text-sm">
-                            <p class="mb-2">男女愛欲的世界などを題材とする<span class="font-bold">好色物</span>で「<span class="cloze">浮世</span>」（＝享楽的現世）を描いた、町人文芸の確立者。</p>
-                            <span class="handwritten-note">→ 自らの欲望に従うことを肯定</span>
+                            <p><span class="font-bold">好色物</span>（浮世草子）で「<span class="cloze">浮世</span>」（享楽的現世）を描き、人間の欲望を肯定した。</p>
                         </div>
                     </div>
-
                     <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-indigo-900 mb-2 flex items-center">
-                            <ruby class="cloze">近松門左衛門<rt>ちかまつもんざえもん</rt></ruby>
-                            <span class="ml-2 text-sm font-normal text-gray-600">（浄瑠璃作家）</span>
-                        </h3>
+                        <h3 class="text-lg font-bold text-indigo-900 mb-2"><ruby class="cloze">近松門左衛門<rt>ちかまつもんざえもん</rt></ruby></h3>
                         <div class="text-sm">
-                            <p class="mb-2">封建社会に生きる庶民の、義理と人情の板挟みによる葛藤（＝<span class="cloze">義理と人情</span>）を主題とした。</p>
-                            <span class="handwritten-note">「憂き世」（つらい世の中）</span>
+                            <p>浄瑠璃作家。義理と人情の板挟みによる葛藤を描き、世の中を「<span class="cloze">憂き世</span>」（つらい世）と捉えた。</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 5. 幕末・仏教の思想 -->
+            <!-- 5. 幕末・仏教 -->
             <section class="print-break-inside-avoid">
                 <h2 class="flex items-center text-xl font-bold text-slate-800 mb-4 pb-2 border-b-2 border-indigo-200">
                     <span class="bg-indigo-600 text-white text-sm py-1 px-3 rounded-full mr-3">5</span>
@@ -409,37 +349,21 @@
                 </h2>
                 <div class="space-y-4">
                     <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-indigo-900 mb-2 flex items-center">
-                            <ruby class="cloze">吉田松陰<rt>よしだしょういん</rt></ruby>
-                            <span class="ml-2 text-sm font-normal text-gray-600">（幕末の尊王論者）</span>
-                        </h3>
+                        <h3 class="text-lg font-bold text-indigo-900 mb-2"><ruby class="cloze">吉田松陰<rt>よしだしょういん</rt></ruby></h3>
                         <div class="text-sm pl-5 border-l-4 border-orange-100">
-                            <p class="mb-1">私塾「<span class="cloze">松下村塾</span>」を開き、高杉晋作ら多くの倒幕の志士を育てた。</p>
-                            <p class="mb-1"><span class="cloze">一君万民論</span>（藩ごとに分裂せず、天皇を万民の主君として平等になろう）を主張。</p>
-                            <p class="mb-1">井伊直弼の政策を批判し、<span class="cloze">安政の大獄</span>で刑死した。</p>
-                            <span class="handwritten-note">幕藩体制を否定</span>
+                            <p><span class="cloze">松下村塾</span>を開く。<span class="cloze">一君万民論</span>を唱え、<span class="cloze">安政の大獄</span>で刑死。</p>
                         </div>
                     </div>
-
                     <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-indigo-900 mb-2 flex items-center">
-                            <ruby class="cloze">良寛<rt>りょうかん</rt></ruby>
-                            <span class="ml-2 text-sm font-normal text-gray-600">（禅僧・歌人・書家）</span>
-                        </h3>
+                        <h3 class="text-lg font-bold text-indigo-900 mb-2"><ruby class="cloze">良寛<rt>りょうかん</rt></ruby></h3>
                         <div class="text-sm pl-5 border-l-4 border-orange-100">
-                            <p>諸国を行脚し、農民や子どもと接し（手鞠をついて遊ぶなど）、和歌や書をたしなむという、名誉や利益を求めない自由奔放にして無欲な生活を送った。</p>
+                            <p>禅僧。諸国を行脚し、子供と遊ぶなど、無欲で自由奔放な生活を送った。</p>
                         </div>
                     </div>
-
                     <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-indigo-900 mb-2 flex items-center">
-                            <ruby class="cloze">鈴木正三<rt>すずきしょうさん</rt></ruby>
-                            <span class="ml-2 text-sm font-normal text-gray-600">（禅僧）</span>
-                        </h3>
+                        <h3 class="text-lg font-bold text-indigo-900 mb-2"><ruby class="cloze">鈴木正三<rt>すずきしょうさん</rt></ruby></h3>
                         <div class="text-sm pl-5 border-l-4 border-orange-100">
-                            <p class="mb-1">あらゆる世俗の職業は、それに専心することで仏道修行（仏行）になると説いた。</p>
-                            <p class="font-bold">「<span class="cloze">職分仏行説</span>」</p>
-                            <span class="handwritten-note">「農業即仏行なり」</span>
+                            <p><span class="cloze">職分仏行説</span>（農業即仏行）を説き、世俗の職業への専心を仏道修行とした。</p>
                         </div>
                     </div>
                 </div>
@@ -448,17 +372,164 @@
 
 
         <!-- ==========================================
-             セクション2：政治・経済（初期非表示）
+             SECTION 2: 明治〜現代思想
+             ========================================== -->
+        <div id="section-meiji" class="section-content hidden">
+            <div class="text-center mb-8 border-b pb-4 print-break-inside-avoid">
+                <h2 class="text-2xl font-bold text-slate-800">第2部：明治〜現代の思想家</h2>
+                <p class="text-sm text-gray-500 mt-2">啓蒙思想・伝統・国家主義・文学・社会主義など</p>
+            </div>
+
+            <!-- 1. 啓蒙思想 -->
+            <section class="print-break-inside-avoid mb-8">
+                <h2 class="flex items-center text-xl font-bold text-slate-800 mb-4 pb-2 border-b-2 border-indigo-200">
+                    <span class="bg-indigo-600 text-white text-sm py-1 px-3 rounded-full mr-3">1</span>
+                    啓蒙思想
+                </h2>
+                <div class="space-y-4">
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">森有礼<rt>もりありのり</rt></ruby></h3>
+                        <p class="text-sm">のちの初代文部大臣。明治期の啓蒙思想団体、<span class="cloze">明六社</span>の発起人。西周や西村茂樹など多数が参加。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">西周<rt>にしあまね</rt></ruby></h3>
+                        <p class="text-sm">西洋哲学用語の翻訳に尽力。「<span class="cloze">哲学</span>」という語を訳出（当初は「希哲学」と訳した）。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">加藤弘之<rt>かとうひろゆき</rt></ruby></h3>
+                        <p class="text-sm">天賦人権思想から次第に国家主義者へ転向。（『国体新論』→『<span class="cloze">人権新説</span>』）</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">中村正直<rt>なかむらまさなお</rt></ruby></h3>
+                        <p class="text-sm">スマイルズの『<span class="cloze">自助論</span>（西国立志編）』を訳し、独立の精神を説く。「天は自ら助くる者を助く」。男女同権、一夫一婦制の実践者。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. 日本の伝統に根ざした思想 -->
+            <section class="print-break-inside-avoid mb-8">
+                <h2 class="flex items-center text-xl font-bold text-slate-800 mb-4 pb-2 border-b-2 border-indigo-200">
+                    <span class="bg-indigo-600 text-white text-sm py-1 px-3 rounded-full mr-3">2</span>
+                    日本の伝統に根ざした思想
+                </h2>
+                <div class="space-y-4">
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">岡倉天心<rt>おかくらてんしん</rt></ruby></h3>
+                        <p class="text-sm">米人フェノロサの影響で日本画の復興に尽力。日本と東洋の美術・茶道を海外に紹介。「<span class="cloze">アジアは一つ</span>」。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">南方熊楠<rt>みなかたくまぐす</rt></ruby></h3>
+                        <p class="text-sm">博物学・民俗学者。粘菌類の研究のため、神社の原生林保護運動（<span class="cloze">神社合祀反対運動</span>）を展開。明治期の環境保護運動。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">九鬼周造<rt>くきしゅうぞう</rt></ruby></h3>
+                        <p class="text-sm">ハイデガーに師事。江戸町人の美意識「<span class="cloze">いき</span>」（色気のあるさっぱりとした潔さ）の構造と、「偶然性」の問題を研究。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">鈴木大拙<rt>すずきだいせつ</rt></ruby></h3>
+                        <p class="text-sm">禅の理論化に取り組み、禅の思想を海外に紹介した。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. 国家主義的な思想 -->
+            <section class="print-break-inside-avoid mb-8">
+                <h2 class="flex items-center text-xl font-bold text-slate-800 mb-4 pb-2 border-b-2 border-indigo-200">
+                    <span class="bg-indigo-600 text-white text-sm py-1 px-3 rounded-full mr-3">3</span>
+                    国家主義的な思想
+                </h2>
+                <div class="space-y-4">
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">徳富蘇峰<rt>とくとみそほう</rt></ruby></h3>
+                        <p class="text-sm">貴族・官僚中心の「欧化主義」に反対し、国民大衆の立場からの西洋文化受容（<span class="cloze">平民主義</span>）を訴えた。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">西村茂樹<rt>にしむらしげき</rt></ruby></h3>
+                        <p class="text-sm">国粋主義の先駆者。『日本道徳論』で儒教的な仁義・忠孝を軸に皇室を崇拝する「<span class="cloze">国民道徳</span>」を主張。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">三宅雪嶺<rt>みやけせつれい</rt></ruby></h3>
+                        <p class="text-sm">代表的な国粋主義者。雑誌『日本人』を創刊し、皮相的な模倣に走る欧化主義を批判（<span class="cloze">国粋保存主義</span>）。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">陸羯南<rt>くがかつなん</rt></ruby></h3>
+                        <p class="text-sm">新聞『日本』を創刊。<span class="cloze">国民主義</span>（国家＞個人）を主張。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">北一輝<rt>きたいっき</rt></ruby></h3>
+                        <p class="text-sm">『<span class="cloze">日本改造法案大綱</span>』で、天皇と国民が直結し富の平等をめざす国家改造を軍に呼びかけた。二・二六事件の首謀者として処刑。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. 近代文学・社会主義・その他 -->
+            <section class="print-break-inside-avoid mb-8">
+                <h2 class="flex items-center text-xl font-bold text-slate-800 mb-4 pb-2 border-b-2 border-indigo-200">
+                    <span class="bg-indigo-600 text-white text-sm py-1 px-3 rounded-full mr-3">4</span>
+                    近代文学・社会主義・その他
+                </h2>
+                <div class="space-y-4">
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">宮沢賢治<rt>みやざわけんじ</rt></ruby></h3>
+                        <p class="text-sm">「法華経」の思想と農民体験が軸。「世界がぜんたい幸福にならないうちは、個人の幸福はありえない」。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">武者小路実篤<rt>むしゃのこうじさねあつ</rt></ruby></h3>
+                        <p class="text-sm">人道主義・理想主義を標榜する「<span class="cloze">白樺派</span>」の中心人物。トルストイに傾倒し、宮崎に「<span class="cloze">新しき村</span>」を建設。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">幸徳秋水<rt>こうとくしゅうすい</rt></ruby></h3>
+                        <p class="text-sm">中江兆民に学ぶ。社会主義者。<span class="cloze">大逆事件</span>で処刑。著書『二十世紀之怪物帝国主義』。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">安部磯雄<rt>あべいそお</rt></ruby></h3>
+                        <p class="text-sm">キリスト教的人道主義から社会主義運動へ。幸徳秋水らと社会民主党を結成。日本フェビアン協会設立。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">三木清<rt>みききよし</rt></ruby></h3>
+                        <p class="text-sm">西田幾多郎の弟子。ヒューマニズム的な立場からマルクス主義を研究。反ファシズム運動で獄死。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">河上肇<rt>かわかみはじめ</rt></ruby></h3>
+                        <p class="text-sm">人道主義に限界を感じ、マルクス主義へ。著書『<span class="cloze">貧乏物語</span>』。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">吉野作造<rt>よしのさくぞう</rt></ruby></h3>
+                        <p class="text-sm">天皇主権下でめざすべき、人民本位の政治（＝<span class="cloze">民本主義</span>）を訴えた大正デモクラシーの指導者。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">植木枝盛<rt>うえきえもり</rt></ruby></h3>
+                        <p class="text-sm">自由民権運動家。国民主義や<span class="cloze">抵抗権</span>を盛り込んだ私擬憲法『<span class="cloze">東洋大日本国国憲按</span>』を作成。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">植村正久<rt>うえむらまさひさ</rt></ruby></h3>
+                        <p class="text-sm">明治・大正期のプロテスタント牧師・伝道者。日本のキリスト教会の形成に貢献。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">丸山眞男<rt>まるやままさお</rt></ruby></h3>
+                        <p class="text-sm">日本は全体主義下で「<span class="cloze">無責任の体系</span>」ができたと分析。各人が「近代的主体」になるべきと説いた。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">坂口安吾<rt>さかぐちあんご</rt></ruby></h3>
+                        <p class="text-sm">『<span class="cloze">堕落論</span>』で、戦時中の美学ではなく、美しくない現実の中に「堕落」してこそ真の自己を発見できると説いた。</p>
+                    </div>
+                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1"><ruby class="cloze">石橋湛山<rt>いしばしたんざん</rt></ruby></h3>
+                        <p class="text-sm">戦後日本の首相。植民地主義（大日本主義）を批判し、経済・文化・平和での地位向上（＝<span class="cloze">小日本主義</span>）を説いた。</p>
+                    </div>
+                </div>
+            </section>
+        </div><!-- /#section-meiji -->
+
+
+        <!-- ==========================================
+             SECTION 3: 政治・経済
              ========================================== -->
         <div id="section-seikei" class="section-content hidden">
             
-            <!-- ==========================================
-                 第1部：経済分野
-                 ========================================== -->
-            
             <div class="text-center mb-8 pb-4 border-b-4 border-double border-slate-200 print-break-inside-avoid">
-                <h1 class="text-3xl font-bold text-slate-800">第1部：経済分野</h1>
-                <p class="text-sm text-gray-500 mt-2">市場機構・財政金融・経済史・国際経済・経済指標</p>
+                <h1 class="text-3xl font-bold text-slate-800">第3部：政治・経済分野</h1>
+                <p class="text-sm text-gray-500 mt-2">経済（市場・財政・歴史）／政治（憲法・統治・国際）</p>
             </div>
 
             <!-- 経済1. 市場機構 -->
@@ -481,76 +552,29 @@
                                 <line x1="20" y1="130" x2="20" y2="10" stroke="#64748b" stroke-width="2" />
                                 <text x="10" y="10" font-size="10" fill="#64748b">価格</text>
                                 <text x="180" y="145" font-size="10" fill="#64748b">数量</text>
-                                
-                                <!-- 需要曲線 -->
+                                <!-- 曲線 -->
                                 <line x1="30" y1="20" x2="180" y2="130" stroke="#ef4444" stroke-width="2" />
-                                <text x="170" y="125" font-size="10" fill="#ef4444">D(需要)</text>
-                                
-                                <!-- 供給曲線 -->
+                                <text x="170" y="125" font-size="10" fill="#ef4444">D</text>
                                 <line x1="30" y1="130" x2="180" y2="20" stroke="#3b82f6" stroke-width="2" />
-                                <text x="170" y="25" font-size="10" fill="#3b82f6">S(供給)</text>
-                                
-                                <!-- 均衡点 -->
+                                <text x="170" y="25" font-size="10" fill="#3b82f6">S</text>
                                 <circle cx="105" cy="75" r="4" fill="#10b981" />
-                                <text x="110" y="70" font-size="10" fill="#10b981" font-weight="bold">均衡点</text>
                             </svg>
                         </div>
 
                         <table class="w-full text-sm text-left border-collapse">
                             <tbody class="divide-y">
-                                <tr>
-                                    <td class="p-1 font-bold">価格が高すぎる</td>
-                                    <td class="p-1">売れ残り（<span class="cloze">超過供給</span>）発生 → 価格は<span class="cloze">下落</span>する。</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-1 font-bold">価格が低すぎる</td>
-                                    <td class="p-1">品不足（<span class="cloze">超過需要</span>）発生 → 価格は<span class="cloze">上昇</span>する。</td>
-                                </tr>
+                                <tr><td class="p-1 font-bold">価格が高すぎる</td><td class="p-1">売れ残り（<span class="cloze">超過供給</span>）→ 価格<span class="cloze">下落</span></td></tr>
+                                <tr><td class="p-1 font-bold">価格が低すぎる</td><td class="p-1">品不足（<span class="cloze">超過需要</span>）→ 価格<span class="cloze">上昇</span></td></tr>
                             </tbody>
                         </table>
                     </div>
 
                     <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="font-bold text-indigo-900 mb-2 border-b pb-1">曲線のシフト（移動）要因</h3>
-                        <p class="text-xs text-gray-500 mb-2">価格以外の条件が変わると曲線そのものが動く！</p>
+                        <h3 class="font-bold text-indigo-900 mb-2 border-b pb-1">曲線のシフト</h3>
                         <ul class="text-sm space-y-3">
-                            <li>
-                                <strong>需要曲線が右へシフト（需要増）</strong><br>
-                                要因：所得の増加、流行（ブーム）、代替品の価格上昇など。<br>
-                                結果：均衡価格は<span class="cloze">上昇</span>し、取引量は<span class="cloze">増加</span>。
-                            </li>
-                            <li>
-                                <strong>供給曲線が右へシフト（供給増）</strong><br>
-                                要因：原材料費の<span class="cloze">下落</span>、技術革新、企業の参入増など。<br>
-                                結果：均衡価格は<span class="cloze">下落</span>し、取引量は<span class="cloze">増加</span>。
-                            </li>
+                            <li><strong>需要増（右シフト）</strong>：所得増、流行。<br>均衡価格<span class="cloze">上昇</span>、取引量<span class="cloze">増加</span>。</li>
+                            <li><strong>供給増（右シフト）</strong>：原材料費<span class="cloze">下落</span>、技術革新。<br>均衡価格<span class="cloze">下落</span>、取引量<span class="cloze">増加</span>。</li>
                         </ul>
-                    </div>
-                </div>
-
-                <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100 mt-4">
-                    <h3 class="font-bold text-indigo-900 mb-2 border-b pb-1">市場の失敗</h3>
-                    <p class="text-sm mb-2">市場メカニズムがうまく働かないケースと対策。</p>
-                    <div class="grid md:grid-cols-2 gap-4 text-sm">
-                        <div class="border-l-4 border-red-400 pl-2">
-                            <strong>①独占・寡占</strong><br>
-                            少数の企業が支配。<span class="cloze">管理価格</span>が形成されやすい（価格の下方硬直性）。<br>
-                            対策：<span class="cloze">独占禁止法</span>（運用は<span class="cloze">公正取引委員会</span>）。カルテル等の禁止。
-                        </div>
-                        <div class="border-l-4 border-blue-400 pl-2">
-                            <strong>②公共財の供給不足</strong><br>
-                            警察・消防・公園など。<span class="cloze">非排除性</span>（対価を払わない人を排除できない）と<span class="cloze">非競合性</span>（誰かが使っても減らない）を持つため、民間では供給困難。
-                        </div>
-                        <div class="border-l-4 border-green-400 pl-2">
-                            <strong>③外部不経済</strong><br>
-                            公害など、市場の外で第三者に損害を与えること。<br>
-                            対策：汚染者負担の原則（PPP）、環境税など。
-                        </div>
-                        <div class="border-l-4 border-orange-400 pl-2">
-                            <strong>④情報の非対称性</strong><br>
-                            売り手と買い手で情報量に差がある（中古車、保険、医療など）。<br>
-                            結果：逆選択（質の悪いものが市場に残る）やモラルハザード。
-                        </div>
                     </div>
                 </div>
             </section>
@@ -563,31 +587,25 @@
                 </h2>
                 
                 <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                    <h3 class="font-bold text-indigo-900 mb-2">企業の形態と株式会社</h3>
+                    <h3 class="font-bold text-indigo-900 mb-2">株式会社</h3>
                     <ul class="text-sm space-y-2">
-                        <li>● <strong>株式会社</strong>：株式を発行して資金を集める。株主は<span class="cloze">有限責任</span>（出資額以上の責任を負わない）。</li>
-                        <li>● <strong>所有と経営の分離</strong>：出資者（株主）と経営者（取締役）が別であること。</li>
-                        <li>● <strong>株主の権利</strong>：<span class="cloze">株主総会</span>での議決権（1株1票）、配当請求権。</li>
-                        <li>● <strong>企業の社会的責任（CSR）</strong>：法令遵守（<span class="cloze">コンプライアンス</span>）、フィランソロピー（社会貢献）、メセナ（芸術支援）。</li>
-                        <li>● <strong>コーポレート・ガバナンス</strong>：企業統治。経営が健全に行われているか監視する仕組み。</li>
+                        <li>● <strong>有限責任</strong>：株主は出資額以上の責任を負わない。</li>
+                        <li>● <strong>所有と経営の分離</strong>：株主（出資）と取締役（経営）。</li>
+                        <li>● <strong>CSR</strong>：企業の社会的責任（法令遵守＝<span class="cloze">コンプライアンス</span>など）。</li>
                     </ul>
                 </div>
                 
-                <!-- 新課程：金融リテラシー -->
                 <div class="mt-4 card bg-yellow-50 p-4 rounded-xl border border-yellow-200">
-                    <h3 class="font-bold text-yellow-800 mb-2 text-sm flex items-center"><i class="fas fa-coins mr-2"></i>家計と金融リテラシー <span class="new-curriculum">新</span></h3>
+                    <h3 class="font-bold text-yellow-800 mb-2 text-sm flex items-center"><i class="fas fa-coins mr-2"></i>金融リテラシー <span class="new-curriculum">新</span></h3>
                     <div class="text-sm space-y-2">
-                        <p><strong>資産形成の三要素</strong>：安全性・流動性・収益性（これらはトレードオフの関係）。</p>
+                        <p><strong>資産形成の三要素</strong>：安全性・流動性・収益性。</p>
                         <table class="w-full text-left bg-white rounded border border-yellow-200">
                             <thead class="bg-yellow-100 text-xs"><tr><th class="p-1">商品</th><th class="p-1">特徴</th></tr></thead>
                             <tbody class="text-xs divide-y divide-yellow-100">
-                                <tr><td class="p-1 font-bold">預貯金</td><td class="p-1">元本保証あり。安全性高いが、収益性は低い。</td></tr>
-                                <tr><td class="p-1 font-bold">債券（国債等）</td><td class="p-1">国や企業にお金を貸す。満期に元本+利子。預金よりリスク・リターン中程度。</td></tr>
-                                <tr><td class="p-1 font-bold">株式</td><td class="p-1">元本保証なし。配当や売却益（キャピタルゲイン）を狙う。リスク・リターン高い。</td></tr>
-                                <tr><td class="p-1 font-bold">投資信託</td><td class="p-1">専門家に運用を任せる。分散投資効果がある。</td></tr>
+                                <tr><td class="p-1 font-bold">預貯金</td><td class="p-1">元本保証。安全性◎。</td></tr>
+                                <tr><td class="p-1 font-bold">株式</td><td class="p-1">元本保証なし。高リスク・高リターン。</td></tr>
                             </tbody>
                         </table>
-                        <p>※<span class="cloze">契約自由の原則</span>と消費者保護：クーリング・オフ制度、消費者契約法（不当な契約の取り消し）。</p>
                     </div>
                 </div>
             </section>
@@ -600,537 +618,138 @@
                 </h2>
 
                 <div class="grid md:grid-cols-2 gap-4">
-                    <!-- 財政 -->
                     <div class="card bg-white p-4 rounded-xl shadow-sm border border-l-4 border-l-green-400 border-gray-200">
-                        <h3 class="font-bold text-green-700 mb-2 text-center">財政（政府の役割）</h3>
+                        <h3 class="font-bold text-green-700 mb-2 text-center">財政</h3>
                         <ul class="text-sm space-y-1">
-                            <li>①<strong>資源配分の調整</strong>：公共財の供給。</li>
-                            <li>②<strong>所得の再分配</strong>：<span class="cloze">累進課税</span>制度と社会保障により、格差を是正する。</li>
-                            <li>③<strong>景気の安定化</strong>：
-                                <ul class="pl-3 list-disc text-xs mt-1 text-gray-600">
-                                    <li><span class="cloze">ビルト・イン・スタビライザー</span>（自動安定化装置）：累進課税や雇用保険など。</li>
-                                    <li><span class="cloze">フィスカル・ポリシー</span>（裁量的財政政策）：公共事業の増減や増減税で意図的に景気を操作する。</li>
-                                </ul>
-                            </li>
-                            <li class="mt-2 pt-2 border-t"><strong>租税</strong>：
-                                <br>直接税（所得税など）と間接税（消費税など）。消費税には<span class="cloze">逆進性</span>（低所得者ほど負担感が重い）がある。
-                            </li>
+                            <li>①<strong>資源配分</strong>：公共財の供給。</li>
+                            <li>②<strong>再分配</strong>：<span class="cloze">累進課税</span>と社会保障。</li>
+                            <li>③<strong>安定化</strong>：<span class="cloze">ビルト・イン・スタビライザー</span>と<span class="cloze">フィスカル・ポリシー</span>。</li>
                         </ul>
                     </div>
-
-                    <!-- 金融 -->
                     <div class="card bg-white p-4 rounded-xl shadow-sm border border-l-4 border-l-blue-400 border-gray-200">
-                        <h3 class="font-bold text-blue-700 mb-2 text-center">金融（日本銀行の役割）</h3>
+                        <h3 class="font-bold text-blue-700 mb-2 text-center">金融（日銀）</h3>
                         <ul class="text-sm space-y-1">
-                            <li>● <strong>日銀の役割</strong>：発券銀行、政府の銀行、<span class="cloze">銀行の銀行</span>。</li>
-                            <li>● <strong>金融政策</strong>（不況時の買いオペ）：
-                                <br>日銀が市中銀行から国債を<span class="cloze">買う</span>（買いオペレーション）
-                                <br>↓
-                                <br>銀行の資金量が増える（マネタリーベース増加）
-                                <br>↓
-                                <br>金利（コールレートなど）が<span class="cloze">下がる</span>
-                                <br>↓
-                                <br>企業が資金を借りやすくなり、景気刺激へ。
-                            </li>
-                            <li class="text-xs text-gray-500 mt-1">※好況時は逆に「売りオペ」を行う。</li>
+                            <li>● 役割：発券銀行、政府の銀行、<span class="cloze">銀行の銀行</span>。</li>
+                            <li>● <strong>不況時（買いオペ）</strong>：日銀が国債を<span class="cloze">買う</span> → 資金供給増 → 金利<span class="cloze">低下</span>。</li>
                         </ul>
                     </div>
                 </div>
             </section>
 
-            <!-- 経済4. 日本経済史（戦後〜現代） -->
+            <!-- 経済4. 日本経済史 -->
             <section class="print-break-inside-avoid mb-8">
                 <h2 class="flex items-center text-xl font-bold text-slate-800 mb-4 pb-2 border-b-2 border-indigo-200">
                     <span class="bg-indigo-600 text-white text-sm py-1 px-3 rounded-full mr-3">経4</span>
-                    戦後日本経済のあゆみ
+                    戦後日本経済史
                 </h2>
                 <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                    <div class="relative border-l-2 border-indigo-200 ml-3 space-y-6">
-                        <div class="pl-6 relative">
-                            <span class="absolute -left-2 top-1 w-4 h-4 rounded-full bg-indigo-500 border-2 border-white"></span>
-                            <h4 class="font-bold text-indigo-900">戦後復興期（1945〜）</h4>
-                            <p class="text-sm"><span class="cloze">傾斜生産方式</span>（石炭・鉄鋼へ重点投資）、財閥解体、農地改革。<span class="cloze">ドッジ・ライン</span>で超均衡予算（インフレ収束）。朝鮮戦争の<span class="cloze">特需</span>で回復。</p>
-                        </div>
-                        <div class="pl-6 relative">
-                            <span class="absolute -left-2 top-1 w-4 h-4 rounded-full bg-indigo-500 border-2 border-white"></span>
-                            <h4 class="font-bold text-indigo-900">高度経済成長期（1955〜1973）</h4>
-                            <p class="text-sm">年率約10%成長。神武・岩戸・オリンピック・<span class="cloze">いざなぎ</span>景気。「投資が投資を呼ぶ」。池田内閣の「<span class="cloze">所得倍増</span>計画」。</p>
-                        </div>
-                        <div class="pl-6 relative">
-                            <span class="absolute -left-2 top-1 w-4 h-4 rounded-full bg-red-500 border-2 border-white"></span>
-                            <h4 class="font-bold text-red-900">オイルショックと安定成長（1973〜）</h4>
-                            <p class="text-sm">第1次石油危機で戦後初のマイナス成長。<span class="cloze">スタグフレーション</span>（不況下の物価高）。産業構造が「重厚長大」から「<span class="cloze">軽薄短小</span>（加工組立・知識集約型）」へ転換。</p>
-                        </div>
-                        <div class="pl-6 relative">
-                            <span class="absolute -left-2 top-1 w-4 h-4 rounded-full bg-indigo-500 border-2 border-white"></span>
-                            <h4 class="font-bold text-indigo-900">バブル経済（1980年代後半）</h4>
-                            <p class="text-sm">1985年<span class="cloze">プラザ合意</span>による円高不況対策で低金利政策 → 株価・地価の異常高騰。</p>
-                        </div>
-                        <div class="pl-6 relative">
-                            <span class="absolute -left-2 top-1 w-4 h-4 rounded-full bg-gray-500 border-2 border-white"></span>
-                            <h4 class="font-bold text-gray-900">失われた〇〇年（1990年代〜）</h4>
-                            <p class="text-sm">バブル崩壊後、不良債権問題で平成不況へ。<span class="cloze">デフレスパイラル</span>。2000年代小泉内閣の「構造改革（規制緩和）」。2008年<span class="cloze">リーマン・ショック</span>。</p>
-                        </div>
-                        <div class="pl-6 relative">
-                            <span class="absolute -left-2 top-1 w-4 h-4 rounded-full bg-indigo-500 border-2 border-white"></span>
-                            <h4 class="font-bold text-indigo-900">アベノミクス（2012〜）</h4>
-                            <p class="text-sm">「三本の矢」（大胆な金融緩和・機動的な財政出動・成長戦略）。</p>
-                        </div>
+                    <div class="space-y-3 text-sm">
+                        <p><span class="font-bold text-indigo-900">復興期</span>：<span class="cloze">傾斜生産方式</span>、ドッジ・ライン。</p>
+                        <p><span class="font-bold text-indigo-900">高度成長</span>：<span class="cloze">所得倍増</span>計画、いざなぎ景気。</p>
+                        <p><span class="font-bold text-red-900">安定成長</span>：石油危機で<span class="cloze">スタグフレーション</span>。<span class="cloze">軽薄短小</span>産業へ。</p>
+                        <p><span class="font-bold text-indigo-900">バブル</span>：<span class="cloze">プラザ合意</span>後の円高不況対策が発端。</p>
+                        <p><span class="font-bold text-gray-900">平成不況</span>：<span class="cloze">デフレスパイラル</span>、リーマン・ショック。</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 経済5. 国際経済 -->
-            <section class="print-break-inside-avoid mb-8">
-                <h2 class="flex items-center text-xl font-bold text-slate-800 mb-4 pb-2 border-b-2 border-indigo-200">
-                    <span class="bg-indigo-600 text-white text-sm py-1 px-3 rounded-full mr-3">経5</span>
-                    国際経済と貿易
-                </h2>
-                
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="font-bold text-indigo-900 mb-2">為替相場の仕組み</h3>
-                        <div class="bg-slate-50 p-2 rounded text-sm mb-2">
-                            <strong>1ドル = 100円 → 80円になること</strong>
-                        </div>
-                        <p class="text-sm mb-2">円の価値が高まったので<strong><span class="cloze">円高</span></strong>（ドル安）。</p>
-                        <ul class="text-sm space-y-1 list-disc list-inside">
-                            <li><strong>輸出</strong>：不利になる（海外で日本製品が高くなるため売れなくなる）。</li>
-                            <li><strong>輸入</strong>：有利になる（海外製品を安く買える）。</li>
-                            <li>海外旅行に行きやすくなる。</li>
-                        </ul>
-                    </div>
-
-                    <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="font-bold text-indigo-900 mb-2">戦後国際経済体制</h3>
-                        <ul class="text-sm space-y-2">
-                            <li>● <strong>通貨：<span class="cloze">ブレトン・ウッズ</span>体制</strong><br>
-                                IMF（国際通貨基金）とIBRD（世界銀行）が中心。米ドルを基軸通貨とする固定相場制。<br>
-                                → 1971年ニクソン・ショック（金・ドル交換停止）<br>
-                                → 1973年変動相場制へ移行。
-                            </li>
-                            <li>● <strong>貿易：GATT → WTO</strong><br>
-                                自由・無差別・多角が原則。GATT（協定）から1995年に<span class="cloze">WTO</span>（世界貿易機関・紛争解決機能あり）へ発展。
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="mt-4 card bg-white p-4 rounded-xl border border-gray-100">
-                    <h3 class="font-bold text-indigo-900 mb-2 text-sm">地域的経済統合</h3>
-                    <p class="text-sm">
-                        <strong><span class="cloze">EU</span></strong>（欧州連合・単一通貨ユーロ）、<strong>USMCA</strong>（旧NAFTA）、<strong>ASEAN</strong>など。<br>
-                        <strong>FTA</strong>（自由貿易協定）や<strong>EPA</strong>（経済連携協定・人や投資の移動も含む）の締結が進む。<br>
-                        <span class="text-xs text-gray-500">※ブロック経済化への懸念もある。</span>
-                    </p>
-                </div>
-            </section>
-
-            <!-- 経済6. 経済指標と現代の課題 -->
-            <section class="print-break-inside-avoid mb-8">
-                <h2 class="flex items-center text-xl font-bold text-slate-800 mb-4 pb-2 border-b-2 border-indigo-200">
-                    <span class="bg-indigo-600 text-white text-sm py-1 px-3 rounded-full mr-3">経6</span>
-                    経済指標と現代の課題
-                </h2>
-                
-                <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                    <h3 class="font-bold text-indigo-900 mb-2 border-b pb-1">経済の豊かさを測る指標</h3>
-                    <table class="w-full text-sm text-left border-collapse">
-                        <tbody class="divide-y">
-                            <tr>
-                                <td class="p-2 font-bold"><span class="cloze">GDP</span>（国内総生産）</td>
-                                <td class="p-2">国内で1年間に生み出された付加価値の総額（場所基準）。</td>
-                            </tr>
-                            <tr>
-                                <td class="p-2 font-bold">GNI（国民総所得）</td>
-                                <td class="p-2">国民が国内外で得た所得の総額。※旧GNPに近い概念。</td>
-                            </tr>
-                            <tr>
-                                <td class="p-2 font-bold"><span class="cloze">三面等価</span>の原則</td>
-                                <td class="p-2">生産面、分配面、支出面のGDPは理論上すべて等しくなる。</td>
-                            </tr>
-                            <tr>
-                                <td class="p-2 font-bold">NNW / グリーンGDP</td>
-                                <td class="p-2">GDPに含まれない家事労働や環境破壊（マイナス）などを考慮した指標。</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100 mt-4">
-                    <h3 class="font-bold text-indigo-900 mb-2 border-b pb-1">経済格差と労働問題</h3>
-                    <div class="grid md:grid-cols-2 gap-4 text-sm">
-                        <div>
-                            <strong>格差の指標</strong><br>
-                            ● <span class="cloze">ジニ係数</span>：0〜1の値。1に近いほど格差が大きい。<br>
-                            ● 相対的貧困率：平均的な所得の半分に満たない人の割合。
-                        </div>
-                        <div>
-                            <strong>労働問題</strong><br>
-                            ● 非正規雇用の増加（雇用の調整弁）。<br>
-                            ● ワーキング・プア（働いているが貧困）。<br>
-                            ● ワーク・ライフ・バランスの実現。
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==========================================
-                 区切り線
-                 ========================================== -->
-            
-            <hr class="my-12 border-t-4 border-double border-slate-300 no-print">
-            
-            <div id="politics-section" class="text-center mb-8 pb-4 border-b-4 border-double border-green-200 print-break-inside-avoid scroll-mt-24">
-                <h1 class="text-3xl font-bold text-green-900">第2部：政治分野</h1>
-                <p class="text-sm text-gray-500 mt-2">正義の理論・憲法・統治機構・国際政治</p>
-            </div>
-
-            <!-- 政治0. 【新課程】公共的な空間と合意形成 -->
+            <!-- 政治1. 民主政治と憲法 -->
             <section class="print-break-inside-avoid mb-8">
                 <h2 class="flex items-center text-xl font-bold text-slate-800 mb-4 pb-2 border-b-2 border-green-200">
-                    <span class="bg-green-600 text-white text-sm py-1 px-3 rounded-full mr-3">政0</span>
-                    公共的な空間と合意形成 <span class="new-curriculum">超重要</span>
+                    <span class="bg-green-600 text-white text-sm py-1 px-3 rounded-full mr-3">政1</span>
+                    民主政治・憲法
                 </h2>
-                
                 <div class="grid md:grid-cols-2 gap-4">
-                    <div class="card bg-green-50 p-5 rounded-xl shadow-sm border border-green-200">
-                        <h3 class="font-bold text-green-900 mb-2 border-b border-green-200 pb-1">決定の基準：効率と公正</h3>
-                        <p class="text-sm mb-2">対立する利益を調整し、合意を形成するための2つのモノサシ。</p>
-                        <ul class="text-sm space-y-2">
-                            <li>● <strong><span class="cloze">効率</span></strong>（Efficiency）：
-                                <br>無駄をなくし、最大の成果（利益）を生み出すこと。
-                                <br><span class="explanation">例：費用対効果、パレート最適（誰かの利益を損なわずに他の誰かの利益を高められない状態）。</span>
-                            </li>
-                            <li>● <strong><span class="cloze">公正</span></strong>（Fairness）：
-                                <br>手続きや結果が不当でないか。
-                                <br><span class="explanation">例：機会の平等、結果の平等、社会的弱者への配慮。</span>
-                            </li>
-                        </ul>
-                    </div>
-
                     <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="font-bold text-indigo-900 mb-2 border-b pb-1">正義と幸福の理論</h3>
-                        <table class="w-full text-sm text-left border-collapse">
+                        <h3 class="font-bold text-indigo-900 mb-2">社会契約説</h3>
+                        <table class="w-full text-sm text-left">
                             <tbody class="divide-y">
-                                <tr>
-                                    <td class="p-2 font-bold"><span class="cloze">功利主義</span></td>
-                                    <td class="p-2">ベンサム。「<span class="cloze">最大多数の最大幸福</span>」。社会全体の幸福総量を最大化することを正義とする。（効率重視）</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2 font-bold"><span class="cloze">義務論</span></td>
-                                    <td class="p-2">カント。結果ではなく、道徳的義務や人格の尊重を重視。人間を手段として扱ってはならない。</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2 font-bold">公正としての正義</td>
-                                    <td class="p-2"><span class="cloze">ロールズ</span>。『正義論』。自分の立場が分からない「<span class="cloze">無知のヴェール</span>」の状態なら、最も不遇な人の利益を最大化する（格差原理）ルールを選ぶはずだと主張。</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2 font-bold">潜在能力</td>
-                                    <td class="p-2"><span class="cloze">セン</span>（Amartya Sen）。幸福は財の量ではなく、「何ができるか（<span class="cloze">ケイパビリティ</span>）」の幅で測るべきだとした。</td>
-                                </tr>
+                                <tr><td><span class="cloze">ホッブズ</span></td><td>万人の<span class="cloze">闘争</span></td><td>絶対王政擁護</td></tr>
+                                <tr><td><span class="cloze">ロック</span></td><td>抵抗権</td><td>『統治二論』</td></tr>
+                                <tr><td><span class="cloze">ルソー</span></td><td>一般意志</td><td>直接民主制</td></tr>
                             </tbody>
                         </table>
                     </div>
-
-                    <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100 md:col-span-2">
-                        <h3 class="font-bold text-indigo-900 mb-2 border-b pb-1">公共空間の思想</h3>
-                        <div class="grid md:grid-cols-2 gap-4 text-sm">
-                            <div>
-                                <strong><span class="cloze">アーレント</span></strong>（Hannah Arendt）<br>
-                                人間の営みを「労働（生命維持）」「仕事（道具制作）」「<span class="cloze">活動</span>（多数の人間と言葉を交わすこと）」に分類。<span class="cloze">活動</span>こそが自由を実現する公共的営みだとした。
-                            </div>
-                            <div>
-                                <strong><span class="cloze">ハーバーマス</span></strong>（Jürgen Habermas）<br>
-                                権力や金銭による「システム」が、人々の話し合いの場である「<span class="cloze">生活世界</span>」を侵食していると批判。対話による合意形成（<span class="cloze">対話的理性</span>）の復権を唱えた。
-                            </div>
+                    <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+                        <h3 class="font-bold text-indigo-900 mb-2">日本国憲法</h3>
+                        <ul class="text-sm space-y-1">
+                            <li>①国民主権（天皇は国事行為のみ）</li>
+                            <li>②平和主義（自衛隊、<span class="cloze">集団的自衛権</span>）</li>
+                            <li>③基本的人権（<span class="cloze">公共の福祉</span>による制限）</li>
+                        </ul>
+                        <div class="mt-2 text-xs bg-red-50 p-2 rounded">
+                            <strong>重要違憲判決</strong>：<span class="cloze">尊属殺重罰</span>、<span class="cloze">薬事法</span>、<span class="cloze">議員定数不均衡</span>、<span class="cloze">愛媛玉ぐし料</span>、再婚禁止期間。
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 政治1. 民主政治の基本原理（制度編） -->
+            <!-- 政治2. 統治機構 -->
             <section class="print-break-inside-avoid mb-8">
-                <h2 class="flex items-center text-xl font-bold text-slate-800 mb-4 pb-2 border-b-2 border-indigo-200">
-                    <span class="bg-indigo-600 text-white text-sm py-1 px-3 rounded-full mr-3">政1</span>
-                    民主政治の基本原理と社会契約説
-                </h2>
-                
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="font-bold text-indigo-900 mb-2 border-b pb-1">国家と政治の基礎</h3>
-                        <ul class="text-sm space-y-2">
-                            <li>● <strong>国家の三要素</strong>：<span class="cloze">領域</span>・<span class="cloze">国民</span>・<span class="cloze">主権</span>。</li>
-                            <li>● <strong>法の支配</strong>：権力も法（憲法）に縛られる（英米法由来）。<br>
-                                <span class="explanation">対：法治主義（独）。「法律に従ってさえいれば良い」という形式主義に陥りやすい。</span>
-                            </li>
-                            <li>● <strong>夜警国家</strong>（消極国家）→ <strong><span class="cloze">福祉国家</span></strong>（積極国家）へ。<br>
-                                <span class="explanation">アダム・スミスの「小さな政府」から、ケインズ的な「大きな政府」への転換。</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="font-bold text-indigo-900 mb-2 border-b pb-1">社会契約説（比較）</h3>
-                        <table class="w-full text-sm text-left border-collapse">
-                            <thead class="bg-gray-100">
-                                <tr><th class="p-1">人物</th><th class="p-1">自然状態</th><th class="p-1">主張</th></tr>
-                            </thead>
-                            <tbody class="divide-y">
-                                <tr>
-                                    <td class="p-1 font-bold"><span class="cloze">ホッブズ</span></td>
-                                    <td class="p-1">万人の万人に対する<span class="cloze">闘争</span></td>
-                                    <td class="p-1">生命を守るため権利を全面的に譲渡（絶対王政擁護）。『リヴァイアサン』</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-1 font-bold"><span class="cloze">ロック</span></td>
-                                    <td class="p-1">自由・平等だが不安定</td>
-                                    <td class="p-1">所有権確保のため信託。<span class="cloze">抵抗権</span>（革命権）あり。『統治二論』</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-1 font-bold"><span class="cloze">ルソー</span></td>
-                                    <td class="p-1">自由・平等・平和</td>
-                                    <td class="p-1">私有財産制で堕落。<span class="cloze">一般意志</span>による直接民主制。『社会契約論』</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 政治2. 日本国憲法と人権 -->
-            <section class="print-break-inside-avoid mb-8">
-                <h2 class="flex items-center text-xl font-bold text-slate-800 mb-4 pb-2 border-b-2 border-indigo-200">
-                    <span class="bg-indigo-600 text-white text-sm py-1 px-3 rounded-full mr-3">政2</span>
-                    日本国憲法と基本的人権
-                </h2>
-                
-                <div class="grid md:grid-cols-3 gap-4">
-                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100 md:col-span-3">
-                        <h3 class="font-bold text-indigo-900 mb-2">憲法三大原理の要点</h3>
-                        <div class="flex flex-wrap gap-4 text-sm">
-                            <div class="flex-1 border-l-4 border-blue-400 pl-2">
-                                <strong>①国民主権</strong><br>
-                                天皇は象徴。国事行為は内閣の<span class="cloze">助言と承認</span>が必要（責任は内閣にある）。
-                            </div>
-                            <div class="flex-1 border-l-4 border-green-400 pl-2">
-                                <strong>②平和主義</strong><br>
-                                9条：戦争放棄、戦力不保持、交戦権否認。<br>
-                                解釈改憲：自衛隊合憲、<span class="cloze">集団的自衛権</span>の一部容認（2015年）。
-                            </div>
-                            <div class="flex-1 border-l-4 border-red-400 pl-2">
-                                <strong>③基本的人権の尊重</strong><br>
-                                侵すことのできない<span class="cloze">永久の権利</span>。制限原理は「<span class="cloze">公共の福祉</span>」。
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 人権分類 -->
-                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="font-bold text-blue-800 mb-2">自由権</h3>
-                        <p class="text-xs text-gray-500 mb-1">国家からの自由</p>
-                        <ul class="text-sm space-y-1">
-                            <li>● <strong>精神</strong>：思想・良心、<span class="cloze">信教</span>（政教分離）、表現。</li>
-                            <li>● <strong>身体</strong>：<span class="cloze">罪刑法定主義</span>、令状主義、黙秘権。</li>
-                            <li>● <strong>経済</strong>：職業選択、居住移転、財産権。</li>
-                        </ul>
-                    </div>
-                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="font-bold text-green-800 mb-2">社会権</h3>
-                        <p class="text-xs text-gray-500 mb-1">国家による自由（20世紀〜）</p>
-                        <ul class="text-sm space-y-1">
-                            <li>● <strong><span class="cloze">生存権</span></strong>（25条）：朝日訴訟（プログラム規定説）。</li>
-                            <li>● <strong>教育を受ける権利</strong>（26条）</li>
-                            <li>● <strong>労働基本権</strong>（28条）：団結権・団交・団行。</li>
-                        </ul>
-                    </div>
-                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="font-bold text-purple-800 mb-2">新しい人権</h3>
-                        <p class="text-xs text-gray-500 mb-1">社会の変化に対応</p>
-                        <ul class="text-sm space-y-1">
-                            <li>● <strong>環境権</strong>：環境アセスメント法。</li>
-                            <li>● <strong>知る権利</strong>：<span class="cloze">情報公開</span>法。特定秘密保護法との兼ね合い。</li>
-                            <li>● <strong>プライバシー</strong>：自己情報<span class="cloze">コントロール</span>権。</li>
-                            <li>● <strong>自己決定権</strong>：インフォームド・コンセント。</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <!-- 違憲判決 -->
-                <div class="mt-4 card bg-red-50 p-4 rounded-xl border border-red-200">
-                    <h3 class="font-bold text-red-800 mb-2 text-sm"><i class="fas fa-exclamation-circle mr-1"></i>最高裁の違憲判決（必ず出る！）</h3>
-                    <div class="grid md:grid-cols-2 gap-x-6 gap-y-1 text-sm">
-                        <div>● <span class="cloze">尊属殺重罰</span>（平等権）</div>
-                        <div>● <span class="cloze">薬事法</span>距離制限（職業選択）</div>
-                        <div>● <span class="cloze">議員定数不均衡</span>（投票価値）</div>
-                        <div>● <span class="cloze">愛媛玉ぐし料</span>（政教分離）</div>
-                        <div>● 森林法共有林分割制限（財産権）</div>
-                        <div>● 在外邦人選挙権制限</div>
-                        <div>● 国籍法婚外子差別</div>
-                        <div>● 民法婚外子相続格差</div>
-                        <div>● 再婚禁止期間（100日超）</div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 政治3. 日本の統治機構と改革 -->
-            <section class="print-break-inside-avoid mb-8">
-                <h2 class="flex items-center text-xl font-bold text-slate-800 mb-4 pb-2 border-b-2 border-indigo-200">
-                    <span class="bg-indigo-600 text-white text-sm py-1 px-3 rounded-full mr-3">政3</span>
-                    日本の統治機構・改革
-                </h2>
-
-                <div class="grid md:grid-cols-3 gap-4">
-                    <!-- 国会 -->
-                    <div class="card bg-white p-4 rounded-xl shadow-sm border-l-4 border-l-red-400 border-gray-200">
-                        <h3 class="font-bold text-red-700 mb-2 text-center">立法（国会）</h3>
-                        <p class="text-xs text-center text-gray-500 mb-2">国権の最高機関</p>
-                        <ul class="text-sm space-y-1">
-                            <li>● <strong><span class="cloze">衆議院の優越</span></strong>：法律案再可決（<span class="cloze">2/3</span>以上）、予算・条約・首相指名（両院協議会後も不一致なら衆議院の議決）、不信任。</li>
-                            <li>● <strong>権限</strong>：<span class="cloze">弾劾裁判所</span>（裁判官を裁く）、<span class="cloze">国政調査権</span>。</li>
-                            <li>● <strong>改革</strong>：<span class="cloze">政府委員</span>廃止、党首討論導入。</li>
-                        </ul>
-                    </div>
-
-                    <!-- 内閣 -->
-                    <div class="card bg-white p-4 rounded-xl shadow-sm border-l-4 border-l-blue-400 border-gray-200">
-                        <h3 class="font-bold text-blue-700 mb-2 text-center">行政（内閣）</h3>
-                        <p class="text-xs text-center text-gray-500 mb-2">議院内閣制</p>
-                        <ul class="text-sm space-y-1">
-                            <li>● <strong><span class="cloze">議院内閣制</span></strong>：国会に対し連帯責任。</li>
-                            <li>● <strong>不信任時</strong>：10日以内に解散か総辞職。</li>
-                            <li>● <strong>改革</strong>：政治主導（<span class="cloze">副大臣</span>・大臣政務官）、<span class="cloze">内閣府</span>設置、省庁再編。</li>
-                        </ul>
-                    </div>
-
-                    <!-- 裁判所 -->
-                    <div class="card bg-white p-4 rounded-xl shadow-sm border-l-4 border-l-green-400 border-gray-200">
-                        <h3 class="font-bold text-green-700 mb-2 text-center">司法（裁判所）</h3>
-                        <p class="text-xs text-center text-gray-500 mb-2">法の番人</p>
-                        <ul class="text-sm space-y-1">
-                            <li>● <strong>司法権の独立</strong>：裁判官は憲法と法律のみに拘束。</li>
-                            <li>● <strong><span class="cloze">違憲審査権</span></strong>：具体的事件に伴って行使（付随的審査制）。</li>
-                            <li>● <strong><span class="cloze">国民審査</span></strong>：最高裁裁判官。</li>
-                            <li>● <strong>裁判員制度</strong>：市民が刑事裁判に参加。事実認定と量刑。</li>
-                            <li>● <strong>統治行為論</strong>：高度な政治問題には判断回避（砂川事件など）。</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 政治4. 各国の政治制度（完全網羅） -->
-            <section class="print-break-inside-avoid mb-8">
-                <h2 class="flex items-center text-xl font-bold text-slate-800 mb-4 pb-2 border-b-2 border-indigo-200">
-                    <span class="bg-indigo-600 text-white text-sm py-1 px-3 rounded-full mr-3">政4</span>
-                    各国の政治制度
-                </h2>
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-                        <h3 class="font-bold text-indigo-900 mb-2 flex items-center"><i class="fas fa-crown mr-2"></i>イギリス</h3>
-                        <ul class="text-sm space-y-1">
-                            <li>● 不文憲法。議院内閣制の母国。</li>
-                            <li>● 上院（貴族）と<span class="cloze">下院</span>（庶民）で、<span class="cloze">下院優越</span>。</li>
-                            <li>● 内閣は下院の多数党党首が首相。野党は「<span class="cloze">影の内閣</span>」を組織。</li>
-                        </ul>
-                    </div>
-                    <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-                        <h3 class="font-bold text-indigo-900 mb-2 flex items-center"><i class="fas fa-flag-usa mr-2"></i>アメリカ</h3>
-                        <ul class="text-sm space-y-1">
-                            <li>● 厳格な三権分立。<span class="cloze">大統領制</span>。国民投票（選挙人）で選出。</li>
-                            <li>● 大統領は議会解散権なし。議会は大統領不信任権なし。</li>
-                            <li>● 大統領は法案提出権はないが、<span class="cloze">拒否権</span>と<span class="cloze">教書</span>送付権を持つ。</li>
-                        </ul>
-                    </div>
-                    <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-                        <h3 class="font-bold text-indigo-900 mb-2">中国</h3>
-                        <ul class="text-sm space-y-1">
-                            <li>● <strong><span class="cloze">民主集中制</span></strong>：共産党による指導。</li>
-                            <li>● <strong><span class="cloze">全国人民代表大会</span></strong>（全人代）：最高の権力機関。</li>
-                        </ul>
-                    </div>
-                    <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-                        <h3 class="font-bold text-indigo-900 mb-2">フランス・ドイツ</h3>
-                        <ul class="text-sm space-y-1">
-                            <li>● 仏：半大統領制。大統領と首相が共存（<span class="cloze">コアビタシオン</span>）。</li>
-                            <li>● 独：議院内閣制。大統領は儀礼的。<span class="cloze">首相</span>に実権。</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 政治5. 地方自治・選挙・政党 -->
-            <section class="print-break-inside-avoid mb-8">
-                <h2 class="flex items-center text-xl font-bold text-slate-800 mb-4 pb-2 border-b-2 border-indigo-200">
-                    <span class="bg-indigo-600 text-white text-sm py-1 px-3 rounded-full mr-3">政5</span>
-                    地方自治・選挙・政党
-                </h2>
-                <div class="grid md:grid-cols-2 gap-4">
-                    <!-- 地方自治 -->
-                    <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="font-bold text-indigo-900 mb-2">地方自治（二元代表制）</h3>
-                        <p class="text-sm mb-2">直接請求権の署名数（超頻出！）</p>
-                        <ul class="text-sm space-y-1">
-                            <li>● 条例制定・事務監査：<span class="cloze">1/50</span>以上。</li>
-                            <li>● 議会解散・首長解職：<span class="cloze">1/3</span>以上。</li>
-                        </ul>
-                        <p class="text-sm mt-2"><strong>地方分権一括法</strong>（1999）：<span class="cloze">機関委任事務</span>を廃止し、「自治事務」と「法定受託事務」へ。国と地方は対等・協力の関係。</p>
-                    </div>
-                    <!-- 選挙と政党 -->
-                    <div class="card bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="font-bold text-indigo-900 mb-2">選挙と政党</h3>
-                        <ul class="text-sm space-y-1">
-                            <li>● <strong>衆議院</strong>：小選挙区比例代表並立制。比例は<span class="cloze">拘束名簿</span>式（重複立候補可）。</li>
-                            <li>● <strong>参議院</strong>：選挙区比例代表並立制。比例は<span class="cloze">非拘束名簿</span>式（<span class="cloze">特定枠</span>あり）。</li>
-                            <li>● <strong>ドント方式</strong>：比例の議席配分計算。</li>
-                            <li>● <strong>55年体制</strong>：自民党（保守）一強＋社会党（革新）。1993年崩壊。</li>
-                            <li>● <strong><span class="cloze">政党交付金</span></strong>：企業献金規制の代わりに税金から助成。</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 政治6. 国際政治・社会保障・情報 -->
-            <section class="print-break-inside-avoid mb-8">
-                <h2 class="flex items-center text-xl font-bold text-slate-800 mb-4 pb-2 border-b-2 border-indigo-200">
-                    <span class="bg-indigo-600 text-white text-sm py-1 px-3 rounded-full mr-3">政6</span>
-                    国際政治・社会保障・情報社会
+                <h2 class="flex items-center text-xl font-bold text-slate-800 mb-4 pb-2 border-b-2 border-green-200">
+                    <span class="bg-green-600 text-white text-sm py-1 px-3 rounded-full mr-3">政2</span>
+                    統治機構
                 </h2>
                 <div class="grid md:grid-cols-3 gap-4">
-                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="font-bold text-indigo-900 mb-2 text-sm">国際政治</h3>
-                        <ul class="text-sm space-y-1">
-                            <li>● <strong>国連安保理</strong>：<span class="cloze">P5</span>（米英仏露中）に拒否権。</li>
-                            <li>● <strong>国際司法裁判所</strong>(ICJ)：原則、当事国の<span class="cloze">同意</span>が必要。</li>
-                            <li>● <strong>核条約</strong>：NPT（不拡散）、CTBT（実験禁止）、<span class="cloze">TPNW</span>（核兵器禁止・日本不参加）。</li>
+                    <div class="card bg-white p-4 shadow-sm border-l-4 border-red-400">
+                        <h3 class="font-bold text-red-700 text-center mb-1">国会</h3>
+                        <ul class="text-sm">
+                            <li><span class="cloze">衆議院の優越</span>。</li>
+                            <li><span class="cloze">国政調査権</span>。</li>
                         </ul>
                     </div>
-                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="font-bold text-indigo-900 mb-2 text-sm">社会保障</h3>
-                        <ul class="text-sm space-y-1">
-                            <li>● <strong>社会保険</strong>：医療・年金・雇用・労災・<span class="cloze">介護</span>。保険料財源。</li>
-                            <li>● <strong>公的扶助</strong>：生活保護（税金財源）。</li>
-                            <li>● <strong>合計特殊出生率</strong>の低下、少子高齢化。</li>
+                    <div class="card bg-white p-4 shadow-sm border-l-4 border-blue-400">
+                        <h3 class="font-bold text-blue-700 text-center mb-1">内閣</h3>
+                        <ul class="text-sm">
+                            <li><span class="cloze">議院内閣制</span>。</li>
+                            <li>不信任→解散or総辞職。</li>
                         </ul>
                     </div>
-                    <div class="card bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="font-bold text-indigo-900 mb-2 text-sm">情報社会 <span class="new-curriculum">新</span></h3>
-                        <ul class="text-sm space-y-1">
-                            <li>● <strong><span class="cloze">忘れられる権利</span></strong>：ネット上の過去情報の削除権。</li>
-                            <li>● <strong><span class="cloze">フィルターバブル</span></strong>：好みの情報しか見えなくなる現象。</li>
-                            <li>● <strong>エコーチェンバー</strong>：同じ意見が反響し増幅する閉鎖的空間。</li>
+                    <div class="card bg-white p-4 shadow-sm border-l-4 border-green-400">
+                        <h3 class="font-bold text-green-700 text-center mb-1">裁判所</h3>
+                        <ul class="text-sm">
+                            <li><span class="cloze">違憲審査権</span>。</li>
+                            <li><span class="cloze">国民審査</span>。</li>
                         </ul>
                     </div>
                 </div>
             </section>
+
+            <!-- 政治3. 国際・社会 -->
+            <section class="print-break-inside-avoid">
+                <h2 class="flex items-center text-xl font-bold text-slate-800 mb-4 pb-2 border-b-2 border-green-200">
+                    <span class="bg-green-600 text-white text-sm py-1 px-3 rounded-full mr-3">政3</span>
+                    国際・社会
+                </h2>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="card bg-white p-4 shadow-sm border border-gray-100">
+                        <h3 class="font-bold text-sm mb-1">国際政治</h3>
+                        <ul class="text-sm space-y-1">
+                            <li>国連安保理：<span class="cloze">P5</span>の拒否権。</li>
+                            <li>国際司法裁判所：<span class="cloze">同意</span>原則。</li>
+                            <li>核条約：NPT、<span class="cloze">TPNW</span>（核兵器禁止）。</li>
+                        </ul>
+                    </div>
+                    <div class="card bg-white p-4 shadow-sm border border-gray-100">
+                        <h3 class="font-bold text-sm mb-1">社会・情報</h3>
+                        <ul class="text-sm space-y-1">
+                            <li>社会保険：医療・年金・雇用・労災・<span class="cloze">介護</span>。</li>
+                            <li>情報：<span class="cloze">忘れられる権利</span>、フィルターバブル。</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
         </div><!-- /#section-seikei -->
 
     </main>
 
     <footer class="bg-slate-800 text-white text-center py-6 no-print mt-12">
-        <p class="text-xs text-slate-400">共通テスト公共 完全統合マスター（江戸＋政治経済）</p>
+        <p class="text-xs text-slate-400">共通テスト公共 完全統合マスター (Final Edition)</p>
     </footer>
 
     <script>
-        // セクション切り替え機能
+        // メニュー開閉
         function toggleMenu() {
             const menu = document.getElementById('drawer-menu');
             const overlay = document.getElementById('drawer-overlay');
@@ -1142,28 +761,32 @@
             }
         }
 
+        // セクション切り替え
         function switchSection(sectionName) {
-            const edoSection = document.getElementById('section-edo');
-            const seikeiSection = document.getElementById('section-seikei');
-            const linkEdo = document.getElementById('link-edo');
-            const linkSeikei = document.getElementById('link-seikei');
+            const edo = document.getElementById('section-edo');
+            const meiji = document.getElementById('section-meiji');
+            const seikei = document.getElementById('section-seikei');
             const title = document.getElementById('page-title');
-
+            
+            // 全て非表示
+            edo.classList.add('hidden');
+            meiji.classList.add('hidden');
+            seikei.classList.add('hidden');
+            
+            // 選択されたものを表示
             if (sectionName === 'edo') {
-                edoSection.classList.remove('hidden');
-                seikeiSection.classList.add('hidden');
-                linkEdo.classList.add('active');
-                linkSeikei.classList.remove('active');
-                title.innerHTML = '<i class="fas fa-book-open text-indigo-600 mr-2"></i>江戸思想家（写真資料）';
+                edo.classList.remove('hidden');
+                title.innerHTML = '<i class="fas fa-book-open text-indigo-600 mr-2"></i>江戸思想家';
+            } else if (sectionName === 'meiji') {
+                meiji.classList.remove('hidden');
+                title.innerHTML = '<i class="fas fa-book-reader text-indigo-600 mr-2"></i>明治〜現代思想';
             } else {
-                edoSection.classList.add('hidden');
-                seikeiSection.classList.remove('hidden');
-                linkEdo.classList.remove('active');
-                linkSeikei.classList.add('active');
-                title.innerHTML = '<i class="fas fa-landmark text-indigo-600 mr-2"></i>政治・経済 完全攻略';
+                seikei.classList.remove('hidden');
+                title.innerHTML = '<i class="fas fa-landmark text-indigo-600 mr-2"></i>政治・経済';
             }
-            toggleMenu(); // メニューを閉じる
-            window.scrollTo(0, 0); // トップへ戻る
+            
+            toggleMenu(); // メニュー閉じる
+            window.scrollTo(0, 0);
         }
 
         // チェックボックス生成
@@ -1205,3 +828,4 @@
     </script>
 </body>
 </html>
+
